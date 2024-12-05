@@ -1,20 +1,13 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
 const path = require('path');
+const bodyParser = require('body-parser');
 
-app.use(express.json());
+app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, 'public')));
+const todosRoutes = require('./routes/todos');
+app.use('/api/todos', todosRoutes);
 
-const todoRoutes = require('./routes/todos');
-
-app.use('/todos', todoRoutes);
-
-app.get('/', (req, res) => {
-  res.send('Welcome to the To-Do List App!');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });

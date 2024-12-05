@@ -28,3 +28,22 @@ document.getElementById('addTodoForm').addEventListener('submit', async (e) => {
 });
 
 fetchTodos();
+
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    
+    const db = await connectDb();
+    await db.run('UPDATE todos SET name = ?, description = ? WHERE id = ?', [name, description, id]);
+    
+    res.status(200).json({ message: 'Todo updated successfully!' });
+});
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    
+    const db = await connectDb();
+    await db.run('DELETE FROM todos WHERE id = ?', [id]);
+    
+    res.status(200).json({ message: 'Todo deleted successfully!' });
+});
